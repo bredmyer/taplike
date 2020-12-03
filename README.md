@@ -1,2 +1,2 @@
-# taplike
+# TapLike
 Hyper-casual tapping game
