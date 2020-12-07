@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3A28933B25797DFA008C012C /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A28933A25797DFA008C012C /* Player.swift */; };
-		3A28934225798CEA008C012C /* spikeBall.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3A28933E25798CEA008C012C /* spikeBall.atlas */; };
 		3A28934325798CEA008C012C /* flyMan.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3A28933F25798CEA008C012C /* flyMan.atlas */; };
 		3A28934425798CEA008C012C /* wingMan.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3A28934025798CEA008C012C /* wingMan.atlas */; };
 		3A28934525798CEA008C012C /* spikeMan.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3A28934125798CEA008C012C /* spikeMan.atlas */; };
@@ -20,6 +19,7 @@
 		3AAC05E92571D55C002549FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AAC05E72571D55C002549FF /* Main.storyboard */; };
 		3AAC05EB2571D560002549FF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AAC05EA2571D560002549FF /* Assets.xcassets */; };
 		3AAC05F52571FAEA002549FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AAC05F42571FAEA002549FF /* LaunchScreen.storyboard */; };
+		3AB569EB257DD49200500A63 /* SpikeMan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB569EA257DD49200500A63 /* SpikeMan.swift */; };
 		3AF6D64625785C2C00323AFD /* bunny1.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3AF6D64525785C2C00323AFD /* bunny1.atlas */; };
 		3AF6D6592578A3CA00323AFD /* bunny2.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3AF6D64E25785F3D00323AFD /* bunny2.atlas */; };
 		3AF6D65B2578A3CC00323AFD /* environment.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 3AF6D64D25785F3400323AFD /* environment.atlas */; };
@@ -27,7 +27,6 @@
 
 /* Begin PBXFileReference section */
 		3A28933A25797DFA008C012C /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		3A28933E25798CEA008C012C /* spikeBall.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = spikeBall.atlas; sourceTree = "<group>"; };
 		3A28933F25798CEA008C012C /* flyMan.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = flyMan.atlas; sourceTree = "<group>"; };
 		3A28934025798CEA008C012C /* wingMan.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = wingMan.atlas; sourceTree = "<group>"; };
 		3A28934125798CEA008C012C /* spikeMan.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = spikeMan.atlas; sourceTree = "<group>"; };
@@ -41,6 +40,7 @@
 		3AAC05EA2571D560002549FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AAC05EC2571D560002549FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AAC05F42571FAEA002549FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		3AB569EA257DD49200500A63 /* SpikeMan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpikeMan.swift; sourceTree = "<group>"; };
 		3AF6D64525785C2C00323AFD /* bunny1.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = bunny1.atlas; sourceTree = "<group>"; };
 		3AF6D64D25785F3400323AFD /* environment.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = environment.atlas; sourceTree = "<group>"; };
 		3AF6D64E25785F3D00323AFD /* bunny2.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = bunny2.atlas; sourceTree = "<group>"; };
@@ -60,9 +60,9 @@
 		3A28933925797DE4008C012C /* Struct */ = {
 			isa = PBXGroup;
 			children = (
+				3AB569E9257DD35500500A63 /* Enemies */,
 				3A94EC32257C658800985999 /* Entity.swift */,
 				3A28933A25797DFA008C012C /* Player.swift */,
-				3A28934725798D15008C012C /* Enemy.swift */,
 			);
 			path = Struct;
 			sourceTree = "<group>";
@@ -114,6 +114,15 @@
 			path = Init;
 			sourceTree = "<group>";
 		};
+		3AB569E9257DD35500500A63 /* Enemies */ = {
+			isa = PBXGroup;
+			children = (
+				3A28934725798D15008C012C /* Enemy.swift */,
+				3AB569EA257DD49200500A63 /* SpikeMan.swift */,
+			);
+			path = Enemies;
+			sourceTree = "<group>";
+		};
 		3AF6D64825785C4300323AFD /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -122,7 +131,6 @@
 				3AF6D64E25785F3D00323AFD /* bunny2.atlas */,
 				3AF6D64D25785F3400323AFD /* environment.atlas */,
 				3A28933F25798CEA008C012C /* flyMan.atlas */,
-				3A28933E25798CEA008C012C /* spikeBall.atlas */,
 				3A28934125798CEA008C012C /* spikeMan.atlas */,
 				3A28934025798CEA008C012C /* wingMan.atlas */,
 			);
@@ -188,7 +196,6 @@
 			files = (
 				3AF6D64625785C2C00323AFD /* bunny1.atlas in Resources */,
 				3AAC05F52571FAEA002549FF /* LaunchScreen.storyboard in Resources */,
-				3A28934225798CEA008C012C /* spikeBall.atlas in Resources */,
 				3AAC05E92571D55C002549FF /* Main.storyboard in Resources */,
 				3AAC05EB2571D560002549FF /* Assets.xcassets in Resources */,
 				3AF6D6592578A3CA00323AFD /* bunny2.atlas in Resources */,
@@ -212,6 +219,7 @@
 				3AAC05E42571D55C002549FF /* GameScene.swift in Sources */,
 				3AAC05E62571D55C002549FF /* GameViewController.swift in Sources */,
 				3AAC05DE2571D55C002549FF /* AppDelegate.swift in Sources */,
+				3AB569EB257DD49200500A63 /* SpikeMan.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

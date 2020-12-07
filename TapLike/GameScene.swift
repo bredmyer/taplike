@@ -81,12 +81,11 @@ class GameScene: SKScene
         if distanceToNextEnemy < Int(self.size.width / 2 - self.size.width / 4) && enemyVisible == false
             {
             // Spawn an enemy just off screen
-            //let ground = SKSpriteNode(imageNamed: "grassMid")
-            //let enemy = Enemy()
-            //enemy.position = CGPoint(x: self.size.width / 2 + enemy.size.width / 2, y: (-self.size.height / 2) + ground.size.height)
-            //enemies.append(enemy)
-            //addChild(enemy)
-            //enemy.stand()
+            let ground = SKSpriteNode(imageNamed: "grassMid")
+            let spikeBall = SpikeMan()
+            spikeBall.position = CGPoint(x: self.size.width / 2 + spikeBall.size.width / 2, y: (-self.size.height / 2) + ground.size.height)
+            enemies.append(spikeBall)
+            addChild(spikeBall)
             enemyVisible = true
             }
             
@@ -127,7 +126,7 @@ class GameScene: SKScene
                 if player.charge < player.chargeMax
                     {
                     player.state = .attack_hit
-                    player.attack()
+                    //player.attack()
                     }
                 }
             }

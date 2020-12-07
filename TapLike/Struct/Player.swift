@@ -108,7 +108,7 @@ class Player: Entity
             charge = chargeMax
             }
         }
-    public func attack()
+    public func attack(_ target: Enemy)
         {
         // Deal damage based on charge
         let damage = charge > 95 ?
