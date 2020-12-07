@@ -129,3 +129,11 @@ class Entity: SKSpriteNode
             }
         }
     }
+    
+extension SKSpriteNode
+    {
+    public func deg2rad(_ number: Double) -> CGFloat
+        {
+        return CGFloat(number * .pi / 180)
+        }
+    }

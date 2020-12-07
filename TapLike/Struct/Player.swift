@@ -40,13 +40,21 @@ class Player: Entity
                EntityState.ready.rawValue:        0.05,
                EntityState.jump.rawValue:         0.1,
                EntityState.attack_hit.rawValue:   0.1,
-               EntityState.attack_miss.rawValue:  0.5]
+               EntityState.attack_miss.rawValue:  0.5,
+               EntityState.hurt.rawValue:         0.1]
         super.init(textureAtlas: textureAtlas, animations: animations, framerates: framerates)
         let sequenceFX: [String: [SKAction]]
-            = ["stand":           [SKAction.repeatForever(SKAction.sequence([SKAction.scaleY(to: 0.9, duration: self.framerates?["stand"] ?? 0),                                                              SKAction.scale(to: 1, duration: self.framerates?["stand"] ?? 0)]))],
-               "walk":            [SKAction.repeatForever(SKAction.sequence([SKAction.scale(to: 1, duration: self.framerates?["walk"] ?? 0),
-                                                                             SKAction.scaleY(to: 0.9, duration: self.framerates?["walk"] ?? 0)]))],
-               "ready":           [SKAction.repeatForever(SKAction.sequence([SKAction.scaleY(to: 0.95, duration: self.framerates?["ready"] ?? 0),                                                                  SKAction.scale(to: 1, duration: self.framerates?["ready"] ?? 0)]))],
+            = ["stand":           [SKAction.repeatForever(SKAction.sequence([SKAction.scaleY(to: 0.9,   duration: self.framerates?["stand"] ?? 0),                                                                   SKAction.scale(to: 1,      duration: self.framerates?["stand"] ?? 0)]))],
+               "walk":            [SKAction.repeatForever(SKAction.sequence([SKAction.scale(to: 1,      duration: self.framerates?["walk"] ?? 0),
+                                                                             SKAction.scaleY(to: 0.9,   duration: self.framerates?["walk"] ?? 0)]))],
+               "ready":           [SKAction.repeatForever(SKAction.sequence([SKAction.scaleY(to: 0.95,  duration: self.framerates?["ready"] ?? 0),                                                                SKAction.scale(to: 1,      duration: self.framerates?["ready"] ?? 0)]))],
+               "hurt":            [SKAction.rotate(byAngle: deg2rad(-3.0),   duration: self.framerates?["hurt"] ?? 0),
+                                   SKAction.rotate(byAngle: deg2rad(0),      duration: self.framerates?["hurt"] ?? 0),
+                                   SKAction.rotate(byAngle: deg2rad(3.0),    duration: self.framerates?["hurt"] ?? 0),
+                                   SKAction.run({
+                                     self.removeAllActions()
+                                     self.state = .stand
+                                   })],
                "attack_hit":      [SKAction.scale(to: 0.75, duration: self.framerates?["attack_hit"] ?? 0),
                                    SKAction.scale(to: 1.25, duration: self.framerates?["attack_hit"] ?? 0),
                                    SKAction.scale(to: 1,    duration: self.framerates?["attack_hit"] ?? 0),
@@ -55,7 +63,7 @@ class Player: Entity
                                      self.state = .stand
                                    })],
                "attack_miss":     [SKAction.scaleY(to: 0.8, duration: self.framerates?["attack_miss"] ?? 0),
-                                   SKAction.scale(to: 1, duration:    self.framerates?["attack_hit"] ?? 0),
+                                   SKAction.scale(to: 1,    duration: self.framerates?["attack_hit"] ?? 0),
                                    SKAction.run({
                                      self.removeAllActions()
                                      self.state = .stand
