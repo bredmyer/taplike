@@ -127,6 +127,7 @@ class GameScene: SKScene
                 if player.charge < player.chargeMax
                     {
                     player.state = .attack_hit
+                    player.attack()
                     }
                 }
             }

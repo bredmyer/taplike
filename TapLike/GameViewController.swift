@@ -19,8 +19,8 @@ class GameViewController: UIViewController
             {
             let scene = GameScene(size: view.bounds.size)
             // Scene properties
-            scene.scaleMode = .resizeFill
             scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            scene.scaleMode = .aspectFill
             
             view.presentScene(scene)
             

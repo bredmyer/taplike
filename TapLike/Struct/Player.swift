@@ -46,7 +46,7 @@ class Player: Entity
         let sequenceFX: [String: [SKAction]]
             = ["stand":           [SKAction.repeatForever(SKAction.sequence([SKAction.scaleY(to: 0.9,   duration: self.framerates?["stand"] ?? 0),                                                                   SKAction.scale(to: 1,      duration: self.framerates?["stand"] ?? 0)]))],
                "walk":            [SKAction.repeatForever(SKAction.sequence([SKAction.scale(to: 1,      duration: self.framerates?["walk"] ?? 0),
-                                                                             SKAction.scaleY(to: 0.9,   duration: self.framerates?["walk"] ?? 0)]))],
+                                                                             SKAction.scaleY(to: 0.95,   duration: self.framerates?["walk"] ?? 0)]))],
                "ready":           [SKAction.repeatForever(SKAction.sequence([SKAction.scaleY(to: 0.95,  duration: self.framerates?["ready"] ?? 0),                                                                SKAction.scale(to: 1,      duration: self.framerates?["ready"] ?? 0)]))],
                "hurt":            [SKAction.rotate(byAngle: deg2rad(-3.0),   duration: self.framerates?["hurt"] ?? 0),
                                    SKAction.rotate(byAngle: deg2rad(0),      duration: self.framerates?["hurt"] ?? 0),
@@ -90,7 +90,9 @@ class Player: Entity
             {
             // Add charge
             chargeUp(duration: chargeDuration)
-            print(charge)
+            #if DEBUG
+                print("Player is charging an attack... \(Int(charge))%")
+            #endif
             }
         }
     // MARK: - Public Methods
@@ -112,6 +114,8 @@ class Player: Entity
         let damage = charge > 95 ?
             ceil(Double(attack ?? 0) * (charge / 100)) :
             floor(Double(attack ?? 0) * (charge / 100))
-        print(damage)
+        #if DEBUG
+            print("Player deals \(Int(damage)) damage")
+        #endif
         }
     }

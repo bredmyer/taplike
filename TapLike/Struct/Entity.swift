@@ -71,7 +71,6 @@ class Entity: SKSpriteNode
         // Make sure to set a proper texture after initialization!
         _state = .stand
         super.init(texture: texture, color: .clear, size: CGSize(width: texture.size().width / 2, height: texture.size().height / 2))
-        self.texture = texture
         self.textureAtlas = textureAtlas
         self.animations = animations
         self.sequenceFX = sequenceFX
