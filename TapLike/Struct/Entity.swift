@@ -52,7 +52,7 @@ class Entity: SKSpriteNode
     var defense: Int?
     
     var charge: Double = 0
-    var chargeMax: Double = 105
+    var chargeMax: Double = 100
     var chargeDuration: TimeInterval = 1.0
     
     // MARK: - Required/Method Overrides

@@ -111,9 +111,10 @@ class Player: Entity
     public func attack(_ target: Enemy)
         {
         // Deal damage based on charge
-        let damage = charge > 95 ?
+        let damage = charge > 85 ?
             ceil(Double(attack ?? 0) * (charge / 100)) :
             floor(Double(attack ?? 0) * (charge / 100))
+        target.delegate?.entity(target, didTakeDamage: Int(damage))
         #if DEBUG
             print("Player deals \(Int(damage)) damage")
         #endif

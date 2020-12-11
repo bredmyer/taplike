@@ -12,7 +12,8 @@ class GameScene: SKScene
     // Scene variables
     var distanceToNextEnemy = 0
     
-    var enemyCount: Int = 0
+    var currentEnemy: Enemy?
+    var enemyCount = 0
     var enemyVisible = false
     var enemies: [Enemy] = []
     
@@ -78,14 +79,16 @@ class GameScene: SKScene
             }
         
         // Spawn Enemy:
-        if distanceToNextEnemy < Int(self.size.width / 2 - self.size.width / 4) && enemyVisible == false
+        if distanceToNextEnemy < Int(self.size.width / 2 - self.size.width / 4) && enemyVisible == false && enemyCount > 0
             {
             // Spawn an enemy just off screen
             let ground = SKSpriteNode(imageNamed: "grassMid")
-            let spikeBall = SpikeMan()
-            spikeBall.position = CGPoint(x: self.size.width / 2 + spikeBall.size.width / 2, y: (-self.size.height / 2) + ground.size.height)
-            enemies.append(spikeBall)
-            addChild(spikeBall)
+            let spikeMan = SpikeMan()
+            spikeMan.position = CGPoint(x: self.size.width / 2 + spikeMan.size.width / 2, y: (-self.size.height / 2) + ground.size.height)
+            enemies.append(spikeMan)
+            addChild(spikeMan)
+            spikeMan.delegate = self
+            currentEnemy = spikeMan
             enemyVisible = true
             }
             
@@ -94,7 +97,7 @@ class GameScene: SKScene
         }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
         {
-        if distanceToNextEnemy > 0
+        if distanceToNextEnemy > 0 && enemyCount > 0
             {
             // If we still have a distance to the next encounter, start walking
             player.state = .walk
@@ -103,16 +106,19 @@ class GameScene: SKScene
         else
             {
             // Otherwise, we need to wind up an attack
-            if player.state == .stand
+            if enemyCount > 0
                 {
-                player.state = .ready
+                if player.state == .stand
+                    {
+                    player.state = .ready
+                    }
                 }
             }
         }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
         {
         player.isMoving = false
-        if distanceToNextEnemy > 0
+        if distanceToNextEnemy > 0 && enemyCount > 0
             {
             // If we still have a distance to the next encounter, stop walking
             player.state = .stand
@@ -120,13 +126,14 @@ class GameScene: SKScene
         else
             {
             // Otherwise, if we're charging up an attack, release an attack
-            if player.state == .ready
+            if player.state == .ready && enemyCount > 0
                 {
                 // It's a success as long as we don't go past the max charge amount
                 if player.charge < player.chargeMax
                     {
                     player.state = .attack_hit
-                    //player.attack()
+                    guard let enemy = currentEnemy else { return }
+                    player.attack(enemy)
                     }
                 }
             }
@@ -210,4 +217,41 @@ class GameScene: SKScene
 //            }
 //        player.charge = 0
 //        }
+    }
+
+// MARK: - EntityDelegate Methods
+extension GameScene: EntityDelegate
+{
+    func entity(_ entity: Entity, didTakeDamage damage: Int)
+        {
+        if let enemy = entity as? Enemy
+            {
+            if enemy == currentEnemy
+                {
+                enemy.state = EntityState.hurt
+                // Take damage
+                if enemy.health != nil
+                    {
+                    enemy.health! -= damage
+                    if enemy.health! <= 0
+                        {
+                        // Die
+                        enemy.removeFromParent()
+                        enemyVisible = false
+                        enemyCount -= 1
+                        distanceToNextEnemy = Int(self.size.width)
+                        }
+                    }
+                }
+            return
+            }
+        if let player = entity as? Player
+            {
+            if player == self.player
+                {
+                player.state = EntityState.hurt
+                }
+            return
+            }
+        }
     }
