@@ -8,5 +8,5 @@
 import SpriteKit
 
 class Enemy: Entity
-    {
+    {    
     }

@@ -41,20 +41,25 @@ class Player: Entity
                EntityState.jump.rawValue:         0.1,
                EntityState.attack_hit.rawValue:   0.1,
                EntityState.attack_miss.rawValue:  0.5,
-               EntityState.hurt.rawValue:         0.1]
+               EntityState.hurt.rawValue:         0.2]
         super.init(textureAtlas: textureAtlas, animations: animations, framerates: framerates)
         let sequenceFX: [String: [SKAction]]
             = ["stand":           [SKAction.repeatForever(SKAction.sequence([SKAction.scaleY(to: 0.9,   duration: self.framerates?["stand"] ?? 0),                                                                   SKAction.scale(to: 1,      duration: self.framerates?["stand"] ?? 0)]))],
                "walk":            [SKAction.repeatForever(SKAction.sequence([SKAction.scale(to: 1,      duration: self.framerates?["walk"] ?? 0),
                                                                              SKAction.scaleY(to: 0.95,   duration: self.framerates?["walk"] ?? 0)]))],
                "ready":           [SKAction.repeatForever(SKAction.sequence([SKAction.scaleY(to: 0.95,  duration: self.framerates?["ready"] ?? 0),                                                                SKAction.scale(to: 1,      duration: self.framerates?["ready"] ?? 0)]))],
-               "hurt":            [SKAction.rotate(byAngle: deg2rad(-3.0),   duration: self.framerates?["hurt"] ?? 0),
-                                   SKAction.rotate(byAngle: deg2rad(0),      duration: self.framerates?["hurt"] ?? 0),
-                                   SKAction.rotate(byAngle: deg2rad(3.0),    duration: self.framerates?["hurt"] ?? 0),
-                                   SKAction.run({
+               "hurt":            [SKAction.scale(to: 1, duration: 0),
+                                   SKAction.run {
+                                     self.anchorPoint = CGPoint(x: 0.5, y: -0.15)
+                                   },
+                                   SKAction.rotate(toAngle: deg2rad(30), duration: 0),
+                                   SKAction.wait(forDuration: self.framerates?["hurt"] ?? 0),
+                                   SKAction.rotate(toAngle: deg2rad(0), duration: 0),
+                                   SKAction.run{
                                      self.removeAllActions()
+                                     self.anchorPoint = CGPoint(x: 0.5, y: 0)
                                      self.state = .stand
-                                   })],
+                                   }],
                "attack_hit":      [SKAction.scale(to: 0.75, duration: self.framerates?["attack_hit"] ?? 0),
                                    SKAction.scale(to: 1.25, duration: self.framerates?["attack_hit"] ?? 0),
                                    SKAction.scale(to: 1,    duration: self.framerates?["attack_hit"] ?? 0),
@@ -108,12 +113,16 @@ class Player: Entity
             charge = chargeMax
             }
         }
-    public func attack(_ target: Enemy)
+    public func attack(_ target: Entity)
         {
         // Deal damage based on charge
-        let damage = charge > 85 ?
-            ceil(Double(attack ?? 0) * (charge / 100)) :
-            floor(Double(attack ?? 0) * (charge / 100))
+        let chargeRounded = min((charge / 100), 1)
+        var damage = charge > 92 ?
+            ceil(Double(attack ?? 0) * chargeRounded) :
+            floor(Double(attack ?? 0) * chargeRounded)
+        // Modify damage based on armor values
+        // Every 3 points is 1 damage reduction
+        damage -= Double((target.defense ?? 0) / 3)
         target.delegate?.entity(target, didTakeDamage: Int(damage))
         #if DEBUG
             print("Player deals \(Int(damage)) damage")

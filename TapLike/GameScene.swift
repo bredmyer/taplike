@@ -15,6 +15,7 @@ class GameScene: SKScene
     var currentEnemy: Enemy?
     var enemyCount = 0
     var enemyVisible = false
+    var enemyWaitTime: Int = 0
     var enemies: [Enemy] = []
     
     // Nodes
@@ -45,6 +46,7 @@ class GameScene: SKScene
         // Create and add the main character
         let ground = SKSpriteNode(imageNamed: "grassMid")
         player.position = CGPoint(x: -self.size.width / 4, y: (-self.size.height / 2) + ground.size.height)
+        player.delegate = self
         addChild(player)
         }
     override func update(_ currentTime: TimeInterval)
@@ -76,6 +78,28 @@ class GameScene: SKScene
                     player.state = .attack_miss
                     }
                 }
+            // Enemy charge up every X seconds
+            if distanceToNextEnemy == 0
+                {
+                if enemyVisible
+                    {
+                    if let enemy = currentEnemy
+                        {
+                        if enemy.state == .stand
+                            {
+                            if enemyWaitTime < 60
+                                {
+                                enemyWaitTime += 1
+                                }
+                            else
+                                {
+                                enemy.state = .ready
+                                enemyWaitTime = 0
+                                }
+                            }
+                        }
+                    }
+                }
             }
         
         // Spawn Enemy:
@@ -89,11 +113,16 @@ class GameScene: SKScene
             addChild(spikeMan)
             spikeMan.delegate = self
             currentEnemy = spikeMan
+            spikeMan.target = player
             enemyVisible = true
             }
             
         // Update nodes:
         player.update(currentTime)
+        for enemy in enemies
+            {
+            enemy.update(currentTime)
+            }
         }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
         {
@@ -129,7 +158,7 @@ class GameScene: SKScene
             if player.state == .ready && enemyCount > 0
                 {
                 // It's a success as long as we don't go past the max charge amount
-                if player.charge < player.chargeMax
+                if player.charge <= player.chargeMax
                     {
                     player.state = .attack_hit
                     guard let enemy = currentEnemy else { return }
@@ -228,18 +257,26 @@ extension GameScene: EntityDelegate
             {
             if enemy == currentEnemy
                 {
-                enemy.state = EntityState.hurt
-                // Take damage
-                if enemy.health != nil
+                if damage > 0
                     {
-                    enemy.health! -= damage
-                    if enemy.health! <= 0
+                    if enemy.state != .ready
                         {
-                        // Die
-                        enemy.removeFromParent()
-                        enemyVisible = false
-                        enemyCount -= 1
-                        distanceToNextEnemy = Int(self.size.width)
+                        enemy.state = .hurt
+                        }
+                    // Take damage
+                    if enemy.health != nil
+                        {
+                        enemy.health! -= damage
+                        if enemy.health! <= 0
+                            {
+                            // Die
+                            enemy.removeFromParent()
+                            enemy.charge = 0
+                            enemy.state = .hurt
+                            enemyVisible = false
+                            enemyCount -= 1
+                            distanceToNextEnemy = Int(self.size.width)
+                            }
                         }
                     }
                 }
@@ -249,7 +286,10 @@ extension GameScene: EntityDelegate
             {
             if player == self.player
                 {
-                player.state = EntityState.hurt
+                if damage > 0
+                    {
+                    player.state = EntityState.hurt
+                    }
                 }
             return
             }

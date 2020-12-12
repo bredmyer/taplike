@@ -51,6 +51,8 @@ class Entity: SKSpriteNode
     var attack: Int?
     var defense: Int?
     
+    var target: Entity?
+    
     var charge: Double = 0
     var chargeMax: Double = 100
     var chargeDuration: TimeInterval = 1.0
