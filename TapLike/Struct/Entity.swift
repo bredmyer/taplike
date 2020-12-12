@@ -12,7 +12,7 @@ import SpriteKit
 
 enum EntityState: String
     {
-    case stand, ready, walk, jump, attack_hit, attack_miss, hurt
+    case stand, ready, walk, jump, attack_hit, attack_miss, hurt, defeat
     }
     
 protocol EntityDelegate: AnyObject

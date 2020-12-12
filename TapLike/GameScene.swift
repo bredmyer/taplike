@@ -85,7 +85,7 @@ class GameScene: SKScene
                     {
                     if let enemy = currentEnemy
                         {
-                        if enemy.state == .stand
+                        if enemy.state == .stand && player.state != .defeat
                             {
                             if enemyWaitTime < 60
                                 {
@@ -289,6 +289,14 @@ extension GameScene: EntityDelegate
                 if damage > 0
                     {
                     player.state = EntityState.hurt
+                    if player.health != nil
+                        {
+                        player.health! -= damage
+                        if player.health! <= 0
+                            {
+                            player.state = .defeat
+                            }
+                        }
                     }
                 }
             return

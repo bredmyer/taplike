@@ -33,7 +33,8 @@ class Player: Entity
                EntityState.jump.rawValue:         ["\(atlasName)_jump"],
                EntityState.attack_hit.rawValue:   ["\(atlasName)_attack"],
                EntityState.attack_miss.rawValue:  ["\(atlasName)_hurt"],
-               EntityState.hurt.rawValue:         ["\(atlasName)_hurt"]]
+               EntityState.hurt.rawValue:         ["\(atlasName)_hurt"],
+               EntityState.defeat.rawValue:       ["\(atlasName)_hurt"]]
         let framerates: [String: TimeInterval]
             = [EntityState.stand.rawValue:        0.2,
                EntityState.walk.rawValue:         0.1,
@@ -41,7 +42,8 @@ class Player: Entity
                EntityState.jump.rawValue:         0.1,
                EntityState.attack_hit.rawValue:   0.1,
                EntityState.attack_miss.rawValue:  0.5,
-               EntityState.hurt.rawValue:         0.2]
+               EntityState.hurt.rawValue:         0.2,
+               EntityState.defeat.rawValue:       1]
         super.init(textureAtlas: textureAtlas, animations: animations, framerates: framerates)
         let sequenceFX: [String: [SKAction]]
             = ["stand":           [SKAction.repeatForever(SKAction.sequence([SKAction.scaleY(to: 0.9,   duration: self.framerates?["stand"] ?? 0),                                                                   SKAction.scale(to: 1,      duration: self.framerates?["stand"] ?? 0)]))],
@@ -58,7 +60,8 @@ class Player: Entity
                                    SKAction.run{
                                      self.removeAllActions()
                                      self.anchorPoint = CGPoint(x: 0.5, y: 0)
-                                     self.state = .stand
+                                     if (self.health ?? 0) > 0 { self.state = .stand }
+                                     else { self.state = .defeat }
                                    }],
                "attack_hit":      [SKAction.scale(to: 0.75, duration: self.framerates?["attack_hit"] ?? 0),
                                    SKAction.scale(to: 1.25, duration: self.framerates?["attack_hit"] ?? 0),
@@ -72,11 +75,15 @@ class Player: Entity
                                    SKAction.run({
                                      self.removeAllActions()
                                      self.state = .stand
-                                   })]]
+                                   })],
+               "defeat":          [SKAction.run {
+                                     self.anchorPoint = CGPoint(x: 0.5, y: 0.0725)
+                                   },
+                                   SKAction.repeatForever(SKAction.scaleY(to: 0.8, duration: self.framerates?["attack_miss"] ?? 0))]]
         self.sequenceFX = sequenceFX
         
         // Assign stats
-        maxHealth = 10
+        maxHealth = 2
         health = maxHealth
         attack = 2
         defense = 1
