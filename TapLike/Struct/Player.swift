@@ -83,10 +83,10 @@ class Player: Entity
         self.sequenceFX = sequenceFX
         
         // Assign stats
-        maxHealth = 2
+        maxHealth = 3
         health = maxHealth
         attack = 2
-        defense = 1
+        defense = 3
 
         state = .stand
         }
@@ -129,8 +129,11 @@ class Player: Entity
             floor(Double(attack ?? 0) * chargeRounded)
         // Modify damage based on armor values
         // Every 3 points is 1 damage reduction
-        damage -= Double((target.defense ?? 0) / 3)
-        target.delegate?.entity(target, didTakeDamage: Int(damage))
+        if let defense = target.defense
+            {
+            damage -= Double(defense / 3)
+            }
+        target.delegate?.entity(target, didTakeDamage: Int(ceil(damage)))
         #if DEBUG
             print("Player deals \(Int(damage)) damage")
         #endif

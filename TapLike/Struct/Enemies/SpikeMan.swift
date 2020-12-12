@@ -106,10 +106,20 @@ class SpikeMan: Enemy
             floor(Double(attack ?? 0) * chargeRounded)
         // Modify damage based on armor values
         // Every 3 points is 1 damage reduction
-        damage -= Double((target.defense ?? 0) / 3)
-        target.delegate?.entity(target, didTakeDamage: Int(damage))
+        if let defense = target.defense
+            {
+            if target.state == .stand
+                {
+                damage -= Double(defense / 3)
+                }
+            else
+                {
+                damage -= Double(defense / 2) / 3
+                }
+            }
+        target.delegate?.entity(target, didTakeDamage: Int(ceil(damage)))
         #if DEBUG
-            print("Enemy deals \(Int(damage)) damage")
+            print("Enemy deals \(Int(ceil(damage))) damage")
         #endif
         }
     }
